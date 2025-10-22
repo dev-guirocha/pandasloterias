@@ -21,7 +21,9 @@
     "pm2:logs": "pm2 logs pandasloterias",
     "pm2:status": "pm2 status",
     "rollback": "chmod +x rollback.sh && ./rollback.sh",
-    "health": "chmod +x health-check.sh && ./health-check.sh"
+    "health": "chmod +x health-check.sh && ./health-check.sh",
+    "db:create": "chmod +x setup-database.sh && sudo ./setup-database.sh",
+    "install": "chmod +x install.sh && ./install.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

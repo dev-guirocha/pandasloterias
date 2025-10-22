@@ -10,7 +10,7 @@ module.exports = {
         PORT: 3001,
         DATABASE_URL: 'postgresql://pandas_jcweb:Jj32631122%40@localhost:5432/pandasloterias',
         SESSION_SECRET: 'Jj32631122.',
-        APP_URL: 'https://pandasloterias.jcwebsoftware.cloud',
+        APP_URL: 'https://pandas.jcwebsoftware.cloud',
         USE_HTTPS: 'false'
       },
       error_file: '/var/log/pandasloterias/error.log',
