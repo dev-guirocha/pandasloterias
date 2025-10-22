@@ -7,7 +7,7 @@ module.exports = {
       exec_mode: 'fork',  // Modo fork
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3001,
         DATABASE_URL: 'postgresql://pandas_jcweb:Jj32631122%40@localhost:5432/pandasloterias',
         SESSION_SECRET: 'Jj32631122.',
         APP_URL: 'https://pandasloterias.jcwebsoftware.cloud',
