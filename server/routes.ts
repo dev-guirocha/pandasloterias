@@ -2,15 +2,14 @@
 // Comprehensive betting platform backend
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { WebSocketServer, WebSocket } from "ws";
+// WebSocket removed - using local PostgreSQL instead of Neon
 import { setupAuth, isAuthenticated, isAdmin } from "./auth";
 import { storage } from "./storage";
 import { z } from "zod";
 import { detectSuspiciousActivity, checkTransactionVelocity } from "./fraud-detection";
 import { transactionRateLimit, kycRateLimit } from "./rate-limit";
 
-// WebSocket clients map
-const wsClients = new Map<string, WebSocket>();
+// WebSocket removed - using local PostgreSQL
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
@@ -106,14 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: req.get("user-agent"),
       });
 
-      // Notify via WebSocket
-      const ws = wsClients.get(userId);
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "balance_update",
-          balance: newBalance.toFixed(2),
-        }));
-      }
+      // WebSocket notifications removed
 
       res.json(transaction);
     } catch (error) {
@@ -183,13 +175,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: req.get("user-agent"),
       });
 
-      const ws = wsClients.get(userId);
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "balance_update",
-          balance: newBalance.toFixed(2),
-        }));
-      }
+      // WebSocket notifications removed
 
       res.json(transaction);
     } catch (error) {
@@ -272,13 +258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: req.get("user-agent"),
       });
 
-      const ws = wsClients.get(userId);
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "balance_update",
-          balance: newBalance.toFixed(2),
-        }));
-      }
+      // WebSocket notifications removed
 
       res.json(bet);
     } catch (error) {
@@ -744,14 +724,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           description: `Bônus: ${userBonus.description || "Promoção"}`,
         });
 
-        // WebSocket update
-        const ws = wsClients.get(userId);
-        if (ws && ws.readyState === 1) {
-          ws.send(JSON.stringify({
-            type: "balance_update",
-            balance: newBalance.toFixed(2),
-          }));
-        }
+        // WebSocket notifications removed
       }
 
       res.json(userBonus);
@@ -986,39 +959,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create HTTP server
   const httpServer = createServer(app);
 
-  // Setup WebSocket server (from javascript_websocket blueprint)
-  const wss = new WebSocketServer({ 
-    server: httpServer, 
-    path: '/ws' 
-  });
-
-  wss.on('connection', (ws: WebSocket, req) => {
-    console.log('WebSocket client connected');
-
-    ws.on('message', (message: string) => {
-      try {
-        const data = JSON.parse(message.toString());
-        
-        if (data.type === 'auth' && data.userId) {
-          wsClients.set(data.userId, ws);
-          ws.send(JSON.stringify({ type: 'auth_success' }));
-        }
-      } catch (error) {
-        console.error('WebSocket message error:', error);
-      }
-    });
-
-    ws.on('close', () => {
-      // Remove client from map
-      for (const [userId, client] of wsClients.entries()) {
-        if (client === ws) {
-          wsClients.delete(userId);
-          break;
-        }
-      }
-      console.log('WebSocket client disconnected');
-    });
-  });
+  // WebSocket server removed - using local PostgreSQL
 
   return httpServer;
 }
