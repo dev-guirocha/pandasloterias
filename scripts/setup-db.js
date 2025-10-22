@@ -83,18 +83,23 @@ async function runMigrations() {
   try {
     console.log('🔄 Running database migrations...');
     
-    // Generate migrations if they don't exist
-    console.log('📝 Generating migrations...');
-    execSync('npm run db:generate', { stdio: 'inherit' });
-    
-    // Push schema to database
+    // Push schema to database (this creates tables)
     console.log('📤 Pushing schema to database...');
     execSync('npm run db:push', { stdio: 'inherit' });
     
     console.log('✅ Database setup completed successfully!');
   } catch (error) {
     console.error('❌ Error running migrations:', error.message);
-    throw error;
+    console.log('🔄 Trying alternative approach...');
+    
+    // Try direct drizzle push
+    try {
+      execSync('npx drizzle-kit push', { stdio: 'inherit' });
+      console.log('✅ Schema pushed successfully!');
+    } catch (pushError) {
+      console.error('❌ Failed to push schema:', pushError.message);
+      throw pushError;
+    }
   }
 }
 

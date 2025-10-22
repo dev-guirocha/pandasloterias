@@ -12,7 +12,17 @@ fi
 pm2 delete pandasloterias
 npm install
 npm run build
-npm run db:setup
+
+# Criar tabelas diretamente
+echo "🗄️ Criando tabelas no banco de dados..."
+npx drizzle-kit push
+
+if [ $? -eq 0 ]; then
+    echo "✅ Tabelas criadas com sucesso!"
+else
+    echo "❌ Erro ao criar tabelas"
+    exit 1
+fi
+
 pm2 start ecosystem.config.cjs
-pm2 restart pandasloterias
 pm2 status
