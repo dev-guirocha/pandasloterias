@@ -1,0 +1,171 @@
+precisamos criar essa aplicação abaixo, lembrando tudo com postgre nada em sessao ou storage local!
+
+2. Design e UX (Dia 2) 
+
+Objetivos: 
+
+Criação de wireframes das principais telas: 
+
+Tela inicial (login/registro) 
+
+Dashboard do usuário 
+
+Área de jogos 
+
+Painel administrativo (simplificado) 
+
+Definição de tema visual do cassino e identidade (paleta de cores, logotipo temporário). 
+
+Prototipagem rápida (Figma). 
+
+Responsividade básica implementada via TailwindCSS. 
+
+Entregáveis: 
+
+Protótipo navegável Figma. 
+
+Layout base do front-end iniciado (header, menu, container principal). 
+
+ 
+
+3. Desenvolvimento Back-end (Dias 3 a 5) 
+
+Dia 3: 
+
+Implementação da base de dados (MySQL). 
+
+Criação das tabelas: 
+
+users, sessions, games, bets, transactions, lotteries. 
+
+Módulo de autenticação (login, registro, JWT). 
+
+Integração KYC simulada (mock API). 
+
+Dia 4: 
+
+Módulo de apostas e resultados de loterias (mock inicial com API fake). 
+
+Módulo de pagamentos (simulação PIX e cartão). 
+
+Módulo administrativo básico (listar usuários, jogos e apostas). 
+
+Dia 5: 
+
+Logs e monitoramento. 
+
+Testes unitários básicos (Jest). 
+
+Documentação Swagger da API (rotas principais). 
+
+Entregáveis: 
+
+API REST funcional com autenticação e endpoints principais. 
+
+Banco de dados operacional. 
+
+Documentação Swagger. 
+
+ 
+
+4. Desenvolvimento Front-end (Dias 6 e 7) 
+
+Dia 6: 
+
+Integração com API (login, registro, listar jogos). 
+
+Dashboard com saldo e histórico de apostas. 
+
+Implementação de Socket.IO para atualização em tempo real de resultados simulados. 
+
+Dia 7: 
+
+Área de jogos com visual interativo básico. 
+
+Painel administrativo (tabelas e CRUD simples). 
+
+Sistema de notificações (toasts para ações e alertas). 
+
+Entregáveis: 
+
+Front-end 100% conectado à API. 
+
+Interface funcional para login, apostas e painel admin. 
+
+ 
+
+5. Integrações e Segurança (Dia 8) 
+
+Objetivos: 
+
+SSL e HTTPS configurados. 
+
+Criptografia bcrypt + JWT revisada. 
+
+Sanitização e proteção contra SQL Injection e XSS. 
+
+Logs centralizados. 
+
+Integração real com 1 gateway de pagamento (PagBank sandbox ou Stripe test). 
+
+Mock de API de loterias brasileiras pronto para substituição futura. 
+
+Entregáveis: 
+
+Ambiente seguro com HTTPS. 
+
+Integrações de pagamento testadas. 
+
+Logs e auditorias funcionando. 
+
+ 
+
+6. Testes, Validação e Deploy (Dia 9) 
+
+Objetivos: 
+
+Testes manuais e automatizados dos fluxos principais (registro, aposta, pagamento, admin). 
+
+Testes de carga leves (Artillery / k6). 
+
+Deploy de produção na VPS (Nginx + PM2). 
+
+Backup automático configurado. 
+
+Entregáveis: 
+
+Plataforma hospedada e funcional. 
+
+Acesso de teste para o cliente. 
+
+Relatório de validação técnica. 
+
+ 
+
+7. Entrega Final e Treinamento (Dia 10) 
+
+Objetivos: 
+
+Demonstração completa da plataforma. 
+
+Treinamento da equipe do cliente (painel, jogos e relatórios). 
+
+Entrega dos seguintes documentos: 
+
+Código-fonte completo (frontend e backend). 
+
+Dump do banco de dados. 
+
+Documentação técnica (rotas, dependências, instruções de deploy). 
+
+Manual de operação administrativa. 
+
+Entregáveis finais: 
+
+Ambiente em produção funcional. 
+
+Documentação técnica entregue. 
+
+Garantia e suporte inicial por 15 dias. 
+
+a aplicação sera uma casa de apostas focad em cassino, jogo do bicho e loterias online!
