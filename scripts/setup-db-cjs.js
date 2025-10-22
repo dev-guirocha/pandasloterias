@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Database Setup Script for PostgreSQL Local
+ * Database Setup Script for PostgreSQL Local (CommonJS version)
  * This script creates the database and runs migrations
  */
 
-import pkg from 'pg';
-const { Client } = pkg;
-import { execSync } from 'child_process';
+require('dotenv').config();
+const { Client } = require('pg');
+const { execSync } = require('child_process');
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
