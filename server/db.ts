@@ -1,6 +1,7 @@
 // PostgreSQL database connection using Drizzle ORM
 // Local PostgreSQL configuration
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from "@shared/schema";
 
