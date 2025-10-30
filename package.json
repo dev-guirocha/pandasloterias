@@ -13,6 +13,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:setup": "node scripts/setup-db.js",
+    "db:create-admin": "node scripts/create-admin.js",
     "deploy": "chmod +x build.sh && ./build.sh",
     "pm2:start": "pm2 start ecosystem.config.cjs",
     "pm2:stop": "pm2 stop pandasloterias",
