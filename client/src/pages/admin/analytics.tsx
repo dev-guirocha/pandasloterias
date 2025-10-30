@@ -27,6 +27,19 @@ export default function Analytics() {
   const { data: timeSeries, isLoading: timeSeriesLoading } = useAnalyticsTimeSeries(timePeriod);
   const { data: topUsers, isLoading: topUsersLoading } = useTopUsers(topUsersLimit);
 
+  // Calculate profit margins and win rates
+  const profitMargin = overview?.revenue?.totalWagered 
+    ? ((overview.revenue.ggr / overview.revenue.totalWagered) * 100).toFixed(2)
+    : "0.00";
+  
+  const winRate = overview?.bets?.total_bets 
+    ? ((overview.bets.winning_bets / overview.bets.total_bets) * 100).toFixed(2)
+    : "0.00";
+
+  const averageBetSize = overview?.revenue?.totalWagered && overview?.bets?.total_bets
+    ? (overview.revenue.totalWagered / overview.bets.total_bets)
+    : 0;
+
   // Format currency
   const formatCurrency = (value: string | number) => {
     const num = typeof value === "string" ? parseFloat(value) : value;
@@ -51,13 +64,30 @@ export default function Analytics() {
         </p>
       </div>
 
+      {/* Hero Header */}
+      <Card className="casino-gradient border-none text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+        <CardContent className="relative p-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-4xl font-bold mb-2">Painel de Controle VIP</h2>
+              <p className="text-white/80 text-lg">Visão geral completa da operação</p>
+            </div>
+            <div className="hidden md:flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-green-500 pulse-gold" />
+              <span className="text-sm">Sistema Online</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Overview Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Users Card */}
-        <Card data-testid="card-users-stats">
+        <Card data-testid="card-users-stats" className="stat-card casino-card-glow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Usuários</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
@@ -68,15 +98,15 @@ export default function Analytics() {
                   {formatNumber(overview?.users.total_users || 0)}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-2 text-xs text-muted-foreground">
-                  <span data-testid="text-active-users">
-                    {formatNumber(overview?.users.active_users || 0)} active
-                  </span>
-                  <span data-testid="text-kyc-users">
+                  <Badge variant="secondary" data-testid="text-active-users">
+                    {formatNumber(overview?.users.active_users || 0)} ativos
+                  </Badge>
+                  <Badge variant="outline" data-testid="text-kyc-users">
                     {formatNumber(overview?.users.kyc_approved_users || 0)} KYC
-                  </span>
-                  <span data-testid="text-admin-users">
+                  </Badge>
+                  <Badge variant="outline" data-testid="text-admin-users">
                     {formatNumber(overview?.users.admin_users || 0)} admin
-                  </span>
+                  </Badge>
                 </div>
               </>
             )}
@@ -84,23 +114,23 @@ export default function Analytics() {
         </Card>
 
         {/* Revenue Card */}
-        <Card data-testid="card-revenue-stats">
+        <Card data-testid="card-revenue-stats" className="stat-card casino-card-glow border-primary/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">GGR (Revenue)</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Receita Bruta (GGR)</CardTitle>
+            <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
               <Skeleton className="h-8 w-32" />
             ) : (
               <>
-                <div className="text-2xl font-bold font-mono" data-testid="text-ggr">
+                <div className="text-2xl font-bold font-mono text-primary" data-testid="text-ggr">
                   {formatCurrency(overview?.revenue.ggr || 0)}
                 </div>
-                <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
-                  <span data-testid="text-total-wagered">
-                    Wagered: {formatCurrency(overview?.revenue.totalWagered || 0)}
-                  </span>
+                <div className="flex gap-2 mt-2 text-xs">
+                  <Badge variant="secondary" data-testid="text-total-wagered">
+                    Apostado: {formatCurrency(overview?.revenue.totalWagered || 0)}
+                  </Badge>
                 </div>
               </>
             )}
@@ -108,10 +138,10 @@ export default function Analytics() {
         </Card>
 
         {/* Bets Card */}
-        <Card data-testid="card-bets-stats">
+        <Card data-testid="card-bets-stats" className="stat-card casino-card-glow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Bets</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total de Apostas</CardTitle>
+            <Target className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
@@ -122,12 +152,12 @@ export default function Analytics() {
                   {formatNumber(overview?.bets.total_bets || 0)}
                 </div>
                 <div className="flex gap-2 mt-2 text-xs">
-                  <span className="text-green-600" data-testid="text-winning-bets">
-                    {formatNumber(overview?.bets.winning_bets || 0)} won
-                  </span>
-                  <span className="text-red-600" data-testid="text-losing-bets">
-                    {formatNumber(overview?.bets.losing_bets || 0)} lost
-                  </span>
+                  <Badge className="bg-green-500 text-white" data-testid="text-winning-bets">
+                    {formatNumber(overview?.bets.winning_bets || 0)} ganharam
+                  </Badge>
+                  <Badge variant="destructive" data-testid="text-losing-bets">
+                    {formatNumber(overview?.bets.losing_bets || 0)} perderam
+                  </Badge>
                 </div>
               </>
             )}
@@ -135,10 +165,10 @@ export default function Analytics() {
         </Card>
 
         {/* Transactions Card */}
-        <Card data-testid="card-transactions-stats">
+        <Card data-testid="card-transactions-stats" className="stat-card casino-card-glow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Transactions</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Transações</CardTitle>
+            <Activity className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
@@ -148,40 +178,79 @@ export default function Analytics() {
                 <div className="text-2xl font-bold" data-testid="text-total-transactions">
                   {formatNumber(overview?.transactions.total_transactions || 0)}
                 </div>
-                <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
-                  <span data-testid="text-deposits-count">
-                    {formatNumber(overview?.transactions.total_deposits || 0)} deposits
-                  </span>
-                  <span data-testid="text-withdrawals-count">
-                    {formatNumber(overview?.transactions.total_withdrawals || 0)} withdrawals
-                  </span>
+                <div className="flex gap-2 mt-2 text-xs">
+                  <Badge className="bg-green-500 text-white" data-testid="text-deposits-count">
+                    {formatNumber(overview?.transactions.total_deposits || 0)} depósitos
+                  </Badge>
+                  <Badge className="bg-red-500 text-white" data-testid="text-withdrawals-count">
+                    {formatNumber(overview?.transactions.total_withdrawals || 0)} saques
+                  </Badge>
                 </div>
               </>
             )}
           </CardContent>
         </Card>
+      </div>
+
+      {/* Additional Metrics Grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        {/* Profit Margin Card */}
+        <Card className="stat-card casino-card-glow border-primary/20">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium">Margem de Lucro</CardTitle>
+            <TrendingUp className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">
+              {profitMargin}%
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Win Rate Card */}
+        <Card className="stat-card casino-card-glow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium">Taxa de Vitória</CardTitle>
+            <Trophy className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">
+              {winRate}%
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Average Bet Card */}
+        <Card className="stat-card casino-card-glow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xs font-medium">Aposta Média</CardTitle>
+            <Target className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold font-mono">
+              {formatCurrency(averageBetSize)}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Bonuses Card */}
-        <Card data-testid="card-bonuses-stats">
+        <Card className="stat-card casino-card-glow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Bonuses Issued</CardTitle>
-            <Gift className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-medium">Bônus Emitidos</CardTitle>
+            <Gift className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
-              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-8 w-full" />
             ) : (
               <>
-                <div className="text-2xl font-bold font-mono" data-testid="text-bonus-value">
+                <div className="text-2xl font-bold font-mono text-primary" data-testid="text-bonus-value">
                   {formatCurrency(overview?.bonuses.bonus_value_issued || 0)}
                 </div>
-                <div className="flex gap-2 mt-2 text-xs text-muted-foreground">
-                  <span data-testid="text-active-bonuses">
-                    {formatNumber(overview?.bonuses.active_bonuses || 0)} active
-                  </span>
-                  <span data-testid="text-total-bonuses">
-                    {formatNumber(overview?.bonuses.total_bonuses || 0)} total
-                  </span>
+                <div className="flex gap-1 mt-1 text-xs">
+                  <Badge variant="secondary" className="text-xs" data-testid="text-active-bonuses">
+                    {formatNumber(overview?.bonuses.active_bonuses || 0)} ativos
+                  </Badge>
                 </div>
               </>
             )}
@@ -189,64 +258,23 @@ export default function Analytics() {
         </Card>
 
         {/* Fraud Alerts Card */}
-        <Card data-testid="card-fraud-stats">
+        <Card className="stat-card casino-card-glow border-red-500/20">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Fraud Alerts</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-xs font-medium">Alertas de Fraude</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             {overviewLoading ? (
-              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-8 w-full" />
             ) : (
               <>
-                <div className="text-2xl font-bold" data-testid="text-total-alerts">
+                <div className="text-2xl font-bold text-red-500" data-testid="text-total-alerts">
                   {formatNumber(overview?.fraudAlerts.total_alerts || 0)}
                 </div>
-                <div className="flex gap-2 mt-2 text-xs">
-                  <span className="text-amber-600" data-testid="text-pending-alerts">
-                    {formatNumber(overview?.fraudAlerts.pending_alerts || 0)} pending
-                  </span>
-                  <span className="text-green-600" data-testid="text-resolved-alerts">
-                    {formatNumber(overview?.fraudAlerts.resolved_alerts || 0)} resolved
-                  </span>
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Deposit Volume Card */}
-        <Card data-testid="card-deposit-volume">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Deposit Volume</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {overviewLoading ? (
-              <Skeleton className="h-8 w-32" />
-            ) : (
-              <>
-                <div className="text-2xl font-bold font-mono text-green-600" data-testid="text-deposit-volume">
-                  {formatCurrency(overview?.transactions.deposit_volume || 0)}
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Withdrawal Volume Card */}
-        <Card data-testid="card-withdrawal-volume">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Withdrawal Volume</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {overviewLoading ? (
-              <Skeleton className="h-8 w-32" />
-            ) : (
-              <>
-                <div className="text-2xl font-bold font-mono text-red-600" data-testid="text-withdrawal-volume">
-                  {formatCurrency(overview?.transactions.withdrawal_volume || 0)}
+                <div className="flex gap-1 mt-1 text-xs">
+                  <Badge variant="secondary" className="bg-amber-500 text-white text-xs" data-testid="text-pending-alerts">
+                    {formatNumber(overview?.fraudAlerts.pending_alerts || 0)} pendentes
+                  </Badge>
                 </div>
               </>
             )}
@@ -255,18 +283,21 @@ export default function Analytics() {
       </div>
 
       {/* Time Series Chart */}
-      <Card data-testid="card-time-series">
-        <CardHeader>
+      <Card data-testid="card-time-series" className="casino-card-glow">
+        <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Transaction Volume Over Time</CardTitle>
-              <CardDescription>Deposits and withdrawals by period</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Volume de Transações ao Longo do Tempo
+              </CardTitle>
+              <CardDescription>Análise de depósitos e saques por período</CardDescription>
             </div>
             <Tabs value={timePeriod} onValueChange={(v) => setTimePeriod(v as typeof timePeriod)}>
-              <TabsList data-testid="tabs-period-selector">
-                <TabsTrigger value="day" data-testid="tab-day">Daily</TabsTrigger>
-                <TabsTrigger value="week" data-testid="tab-week">Weekly</TabsTrigger>
-                <TabsTrigger value="month" data-testid="tab-month">Monthly</TabsTrigger>
+              <TabsList data-testid="tabs-period-selector" className="bg-muted">
+                <TabsTrigger value="day" data-testid="tab-day">Diário</TabsTrigger>
+                <TabsTrigger value="week" data-testid="tab-week">Semanal</TabsTrigger>
+                <TabsTrigger value="month" data-testid="tab-month">Mensal</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -277,34 +308,45 @@ export default function Analytics() {
           ) : (
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={timeSeries || []}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted-foreground) / 0.2)" />
                 <XAxis 
                   dataKey="period" 
                   tick={{ fontSize: 12 }}
+                  stroke="hsl(var(--muted-foreground))"
                 />
                 <YAxis 
                   tick={{ fontSize: 12 }}
                   tickFormatter={(value) => formatCurrency(value)}
+                  stroke="hsl(var(--muted-foreground))"
                 />
                 <Tooltip 
                   formatter={(value: number) => formatCurrency(value)}
-                  labelStyle={{ color: "#000" }}
+                  contentStyle={{ 
+                    backgroundColor: 'hsl(var(--popover))', 
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px'
+                  }}
+                  labelStyle={{ color: "hsl(var(--foreground))" }}
                 />
-                <Legend />
+                <Legend wrapperStyle={{ paddingTop: '20px' }} />
                 <Line 
                   type="monotone" 
                   dataKey="deposits" 
                   stroke="hsl(142, 71%, 45%)" 
-                  strokeWidth={2}
-                  name="Deposits"
+                  strokeWidth={3}
+                  name="Depósitos"
+                  dot={{ fill: 'hsl(142, 71%, 45%)', r: 5 }}
+                  activeDot={{ r: 7 }}
                   data-testid="line-deposits"
                 />
                 <Line 
                   type="monotone" 
                   dataKey="withdrawals" 
                   stroke="hsl(0, 72%, 55%)" 
-                  strokeWidth={2}
-                  name="Withdrawals"
+                  strokeWidth={3}
+                  name="Saques"
+                  dot={{ fill: 'hsl(0, 72%, 55%)', r: 5 }}
+                  activeDot={{ r: 7 }}
                   data-testid="line-withdrawals"
                 />
               </LineChart>
@@ -314,12 +356,15 @@ export default function Analytics() {
       </Card>
 
       {/* Top Users Table */}
-      <Card data-testid="card-top-users">
-        <CardHeader>
+      <Card data-testid="card-top-users" className="casino-card-glow">
+        <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Top Users by Wagering Volume</CardTitle>
-              <CardDescription>Highest volume players on the platform</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-primary" />
+                Ranking VIP - Top Jogadores
+              </CardTitle>
+              <CardDescription>Maiores apostadores da plataforma</CardDescription>
             </div>
             <div className="flex gap-2">
               <Button
@@ -353,52 +398,63 @@ export default function Analytics() {
           {topUsersLoading ? (
             <Skeleton className="h-96 w-full" />
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead data-testid="header-rank">Rank</TableHead>
-                  <TableHead data-testid="header-username">Username</TableHead>
-                  <TableHead data-testid="header-email">Email</TableHead>
-                  <TableHead className="text-right" data-testid="header-wagered">Total Wagered</TableHead>
-                  <TableHead className="text-right" data-testid="header-deposited">Total Deposited</TableHead>
-                  <TableHead className="text-right" data-testid="header-bets">Bet Count</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {topUsers && topUsers.length > 0 ? (
-                  topUsers.map((user, index) => (
-                    <TableRow key={user.id} data-testid={`row-user-${user.id}`}>
-                      <TableCell data-testid={`text-rank-${index + 1}`}>
-                        <Badge variant={index === 0 ? "default" : "outline"}>
-                          #{index + 1}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="font-medium" data-testid={`text-username-${user.id}`}>
-                        {user.username}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground" data-testid={`text-email-${user.id}`}>
-                        {user.email}
-                      </TableCell>
-                      <TableCell className="text-right font-mono" data-testid={`text-wagered-${user.id}`}>
-                        {formatCurrency(user.total_wagered)}
-                      </TableCell>
-                      <TableCell className="text-right font-mono" data-testid={`text-deposited-${user.id}`}>
-                        {formatCurrency(user.total_deposited)}
-                      </TableCell>
-                      <TableCell className="text-right" data-testid={`text-bet-count-${user.id}`}>
-                        {formatNumber(user.bet_count)}
+            <div className="rounded-md border overflow-hidden">
+              <Table>
+                <TableHeader className="bg-muted/50">
+                  <TableRow>
+                    <TableHead data-testid="header-rank">#</TableHead>
+                    <TableHead data-testid="header-username">Usuário</TableHead>
+                    <TableHead data-testid="header-email">Email</TableHead>
+                    <TableHead className="text-right" data-testid="header-wagered">Total Apostado</TableHead>
+                    <TableHead className="text-right" data-testid="header-deposited">Total Depositado</TableHead>
+                    <TableHead className="text-right" data-testid="header-bets">Qtd. Apostas</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {topUsers && topUsers.length > 0 ? (
+                    topUsers.map((user, index) => (
+                      <TableRow 
+                        key={user.id} 
+                        data-testid={`row-user-${user.id}`}
+                        className={`transition-colors ${index === 0 ? 'bg-primary/5 hover:bg-primary/10' : ''}`}
+                      >
+                        <TableCell data-testid={`text-rank-${index + 1}`}>
+                          <Badge 
+                            variant={index === 0 ? "default" : index < 3 ? "secondary" : "outline"}
+                            className={index === 0 ? "bg-gradient-to-r from-primary to-primary/80" : ""}
+                          >
+                            {index === 0 && "👑"} #{index + 1}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="font-medium" data-testid={`text-username-${user.id}`}>
+                          {user.username}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground" data-testid={`text-email-${user.id}`}>
+                          {user.email}
+                        </TableCell>
+                        <TableCell className="text-right font-mono font-semibold text-primary" data-testid={`text-wagered-${user.id}`}>
+                          {formatCurrency(user.total_wagered)}
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-green-600" data-testid={`text-deposited-${user.id}`}>
+                          {formatCurrency(user.total_deposited)}
+                        </TableCell>
+                        <TableCell className="text-right" data-testid={`text-bet-count-${user.id}`}>
+                          <Badge variant="outline">
+                            {formatNumber(user.bet_count)}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center text-muted-foreground py-12" data-testid="text-no-users">
+                        Nenhum usuário com atividade de apostas encontrado
                       </TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground" data-testid="text-no-users">
-                      No users with betting activity found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

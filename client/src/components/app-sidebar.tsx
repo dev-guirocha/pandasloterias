@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function AppSidebar() {
   const [location] = useLocation();
@@ -124,14 +125,17 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-            <Trophy className="h-6 w-6 text-primary" />
+      <SidebarHeader className="p-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg casino-card-glow">
+            <Trophy className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-bold">BetPlatform</span>
-            <span className="text-xs text-muted-foreground">Casino & Lottery</span>
+            <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+              BetPlatform
+            </span>
+            <span className="text-xs text-muted-foreground">Casino VIP & Lottery</span>
           </div>
         </div>
       </SidebarHeader>
@@ -186,28 +190,35 @@ export function AppSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
-        <div className="flex items-center gap-3 mb-3 p-3 rounded-lg bg-sidebar-accent">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-primary text-primary-foreground">
+      <SidebarFooter className="p-4 space-y-3">
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 casino-card-glow">
+          <Avatar className="h-9 w-9 ring-2 ring-primary/20">
+            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-bold">
               {user?.fullName?.charAt(0).toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate">{user?.fullName}</p>
-            <p className="text-xs text-muted-foreground truncate">@{user?.username}</p>
+            <div className="flex items-center gap-1">
+              <p className="text-xs text-muted-foreground truncate">@{user?.username}</p>
+              {isAdmin && (
+                <Badge className="text-[10px] px-1 py-0 bg-primary text-primary-foreground">
+                  ADMIN
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
         <Button
           variant="outline"
           size="sm"
-          className="w-full justify-start"
+          className="w-full justify-start border-destructive/20 hover:bg-destructive/10"
           onClick={() => logoutMutation.mutate()}
           disabled={logoutMutation.isPending}
           data-testid="button-logout"
         >
           <LogOut className="h-4 w-4 mr-2" />
-          Sair
+          {logoutMutation.isPending ? "Saindo..." : "Sair"}
         </Button>
       </SidebarFooter>
     </Sidebar>

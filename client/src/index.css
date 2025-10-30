@@ -32,15 +32,15 @@
 
   --sidebar-border: 220 8% 82%;
 
-  --sidebar-primary: 160 84% 35%;
+  --sidebar-primary: 43 96% 56%;
 
-  --sidebar-primary-foreground: 160 10% 98%;
+  --sidebar-primary-foreground: 0 0% 0%;
 
   --sidebar-accent: 220 8% 88%;
 
   --sidebar-accent-foreground: 220 10% 15%;
 
-  --sidebar-ring: 160 84% 45%;
+  --sidebar-ring: 43 96% 56%;
 
   --popover: 220 5% 90%;
 
@@ -48,9 +48,9 @@
 
   --popover-border: 220 8% 80%;
 
-  --primary: 160 84% 35%;
+  --primary: 43 96% 56%;
 
-  --primary-foreground: 160 10% 98%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 220 8% 86%;
 
@@ -70,9 +70,9 @@
 
   --input: 220 10% 75%;
   --ring: 160 84% 45%;
-  --chart-1: 160 84% 35%;
-  --chart-2: 270 70% 50%;
-  --chart-3: 38 92% 45%;
+  --chart-1: 43 96% 56%;
+  --chart-2: 160 84% 35%;
+  --chart-3: 0 72% 55%;
   --chart-4: 210 75% 45%;
   --chart-5: 340 75% 45%;
 
@@ -150,15 +150,15 @@
 
   --sidebar-border: 220 12% 16%;
 
-  --sidebar-primary: 160 84% 45%;
+  --sidebar-primary: 43 96% 56%;
 
-  --sidebar-primary-foreground: 160 10% 98%;
+  --sidebar-primary-foreground: 0 0% 0%;
 
   --sidebar-accent: 220 15% 16%;
 
   --sidebar-accent-foreground: 220 10% 95%;
 
-  --sidebar-ring: 160 84% 45%;
+  --sidebar-ring: 43 96% 56%;
 
   --popover: 220 15% 14%;
 
@@ -166,9 +166,9 @@
 
   --popover-border: 220 12% 22%;
 
-  --primary: 160 84% 35%;
+  --primary: 43 96% 56%;
 
-  --primary-foreground: 160 10% 98%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 220 12% 20%;
 
@@ -188,9 +188,9 @@
 
   --input: 220 12% 28%;
   --ring: 160 84% 45%;
-  --chart-1: 160 84% 55%;
-  --chart-2: 270 70% 65%;
-  --chart-3: 38 92% 60%;
+  --chart-1: 43 96% 56%;
+  --chart-2: 160 84% 55%;
+  --chart-3: 0 72% 65%;
   --chart-4: 210 75% 60%;
   --chart-5: 340 75% 60%;
 
@@ -240,6 +240,49 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Casino/Betting House Theme Enhancements */
+  .casino-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--chart-1)) 100%);
+  }
+
+  .casino-card-glow {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+  }
+
+  .casino-card-glow:hover {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.25);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  .stat-card {
+    @apply relative overflow-hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--chart-1)));
+    opacity: 0.8;
+  }
+
+  .pulse-gold {
+    animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-gold {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .7;
+    }
   }
 }
 
