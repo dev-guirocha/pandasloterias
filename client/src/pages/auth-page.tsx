@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Redirect } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Shield, TrendingUp, Lock, Award } from "lucide-react";
+import { Loader2, Shield, TrendingUp, Lock, Award, Eye, EyeOff } from "lucide-react";
+import AuroraBackground from "@/components/effects/aurora-background";
+import PandaIcon from "@/components/icons/panda";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "@shared/schema";
@@ -21,6 +23,8 @@ const loginSchema = z.object({
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [activeTab, setActiveTab] = useState("login");
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
   const loginForm = useForm({
     resolver: zodResolver(loginSchema),
@@ -56,15 +60,16 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex relative">
+      <AuroraBackground />
       {/* Left Side - Form */}
-      <div className="w-full lg:w-2/5 flex items-center justify-center p-8 bg-background">
+      <div className="w-full lg:w-2/5 flex items-center justify-center p-8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 relative z-10">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-              <Award className="w-8 h-8 text-primary" />
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-lg casino-card-glow mb-4">
+              <PandaIcon className="h-12 w-12" />
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">Plataforma de Apostas</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gradient-casino">Panda Loterias</h1>
             <p className="text-muted-foreground">
               Cassino, Loterias e Jogo do Bicho Online
             </p>
@@ -77,7 +82,7 @@ export default function AuthPage() {
             </TabsList>
 
             <TabsContent value="login" className="mt-6">
-              <Card>
+              <Card className="card-glass">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl">Entrar na sua conta</CardTitle>
                   <CardDescription>
@@ -113,13 +118,23 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Senha</FormLabel>
                             <FormControl>
-                              <Input
-                                {...field}
-                                type="password"
-                                placeholder="••••••••"
-                                data-testid="input-login-password"
-                                autoComplete="current-password"
-                              />
+                              <div className="relative">
+                                <Input
+                                  {...field}
+                                  type={showRegisterPassword ? "text" : "password"}
+                                  placeholder="Mínimo 6 caracteres"
+                                  data-testid="input-register-password"
+                                  autoComplete="new-password"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
+                                  onClick={() => setShowRegisterPassword((v) => !v)}
+                                  aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
+                                >
+                                  {showRegisterPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -144,7 +159,7 @@ export default function AuthPage() {
             </TabsContent>
 
             <TabsContent value="register" className="mt-6">
-              <Card>
+              <Card className="card-glass">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl">Criar nova conta</CardTitle>
                   <CardDescription>
@@ -258,13 +273,23 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Senha</FormLabel>
                             <FormControl>
-                              <Input
-                                {...field}
-                                type="password"
-                                placeholder="Mínimo 6 caracteres"
-                                data-testid="input-register-password"
-                                autoComplete="new-password"
-                              />
+                              <div className="relative">
+                                <Input
+                                  {...field}
+                                  type={showRegisterPassword ? "text" : "password"}
+                                  placeholder="Mínimo 6 caracteres"
+                                  data-testid="input-register-password"
+                                  autoComplete="new-password"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
+                                  onClick={() => setShowRegisterPassword((v) => !v)}
+                                  aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
+                                >
+                                  {showRegisterPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -304,13 +329,13 @@ export default function AuthPage() {
       </div>
 
       {/* Right Side - Hero Section */}
-      <div className="hidden lg:flex lg:w-3/5 relative bg-gradient-to-br from-primary/20 via-accent/10 to-background items-center justify-center p-12">
+      <div className="hidden lg:flex lg:w-3/5 relative bg-gradient-to-br from-emerald-700/30 via-amber-800/10 to-background items-center justify-center p-12">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0tMTYgMGMwLTIuMjEgMS43OS00IDQtNHM0IDEuNzkgNCA0LTEuNzkgNC00IDQtNC0xLjc5LTQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
         
         <div className="relative z-10 max-w-lg space-y-8 text-center">
           <div className="space-y-4">
             <h2 className="text-4xl lg:text-5xl font-bold tracking-tight">
-              Bem-vindo à Maior Plataforma de Apostas
+              Bem-vindo à Panda Loterias
             </h2>
             <p className="text-xl text-muted-foreground">
               Cassino online, loterias e jogo do bicho com segurança e transparência total
@@ -323,7 +348,7 @@ export default function AuthPage() {
                 <Shield className="h-6 w-6 text-primary" />
               </div>
               <div className="space-y-1">
-                <h3 className="font-semibold">100% Seguro e Confiável</h3>
+                <h3 className="font-semibold">100% Seguro e ConfiÃ¡vel</h3>
                 <p className="text-sm text-muted-foreground">
                   KYC completo, transações criptografadas e auditoria em tempo real
                 </p>
@@ -337,7 +362,7 @@ export default function AuthPage() {
               <div className="space-y-1">
                 <h3 className="font-semibold">Saque Rápido e Fácil</h3>
                 <p className="text-sm text-muted-foreground">
-                  PIX instantâneo, cartões e múltiplas formas de pagamento
+                  PIX instantâneo, cartões e mÃºltiplas formas de pagamento
                 </p>
               </div>
             </div>
@@ -359,3 +384,11 @@ export default function AuthPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-// Shadcn Sidebar component for navigation
+﻿// Shadcn Sidebar component for navigation
 import { 
   Home, 
   Wallet, 
@@ -30,6 +30,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import PandaIcon from "@/components/icons/panda";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -53,7 +54,7 @@ export function AppSidebar() {
     {
       title: "Apostas",
       url: "/bets",
-      icon: Trophy,
+      icon: Dice6,
       testId: "nav-bets",
     },
     {
@@ -90,13 +91,13 @@ export function AppSidebar() {
       testId: "nav-admin-analytics",
     },
     {
-      title: "Usuários",
+      title: "UsuÃ¡rios",
       url: "/admin/users",
       icon: Users,
       testId: "nav-admin-users",
     },
     {
-      title: "Aprovações KYC",
+      title: "AprovaÃ§Ãµes KYC",
       url: "/admin/kyc",
       icon: FileCheck,
       testId: "nav-admin-kyc",
@@ -128,14 +129,14 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
         <div className="relative flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg casino-card-glow">
-            <Trophy className="h-6 w-6 text-primary-foreground" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-lg casino-card-glow">
+            <PandaIcon className="h-8 w-8" />
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              BetPlatform
+              Panda Loterias
             </span>
-            <span className="text-xs text-muted-foreground">Casino VIP & Lottery</span>
+            <span className="text-xs text-muted-foreground">Cassino & Loterias</span>
           </div>
         </div>
       </SidebarHeader>
@@ -193,7 +194,7 @@ export function AppSidebar() {
       <SidebarFooter className="p-4 space-y-3">
         <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 casino-card-glow">
           <Avatar className="h-9 w-9 ring-2 ring-primary/20">
-            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-bold">
+            <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-primary-foreground font-bold">
               {user?.fullName?.charAt(0).toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
@@ -224,3 +225,8 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
+
+
+
+
+

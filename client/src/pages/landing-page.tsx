@@ -1,12 +1,18 @@
-import { Link, useLocation } from "wouter";
+﻿import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import GameCard from "@/components/game-card";
 import { Badge } from "@/components/ui/badge";
+import PromoMarquee from "@/components/promo-marquee";
+import JackpotBanner from "@/components/jackpot-banner";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Trophy, Zap, Shield, Gift, TrendingUp, Users, ChevronRight } from "lucide-react";
+import { Trophy, Zap, Shield, Gift, TrendingUp, Users, ChevronRight, Sparkles, Dice6, Gamepad2, Diamond, Medal } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import AuroraBackground from "@/components/effects/aurora-background";
+import { motion } from "framer-motion";
+import PandaIcon from "@/components/icons/panda";
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -17,7 +23,7 @@ export default function LandingPage() {
     queryKey: ['/api/settings'],
   });
 
-  const platformName = (settings as any)?.platformName || "BetPlatform";
+  const platformName = (settings as any)?.platformName || "Panda Loterias";
 
   // Redirect authenticated users to dashboard
   useEffect(() => {
@@ -30,26 +36,29 @@ export default function LandingPage() {
     {
       title: "Slots",
       description: "Milhares de jogos de slot",
-      icon: Trophy,
-      color: "bg-purple-500/10 text-purple-500",
+      icon: Diamond,
+      color: "bg-emerald-500/10 text-emerald-500",
+      badge: "JACKPOT",
     },
     {
-      title: "Casino Ao Vivo",
+      title: "Cassino Ao Vivo",
       description: "Dealers reais em tempo real",
-      icon: Users,
-      color: "bg-red-500/10 text-red-500",
+      icon: Dice6,
+      color: "bg-lime-600/10 text-lime-600",
+      badge: "HOT",
     },
     {
       title: "Apostas Esportivas",
       description: "Futebol, basquete e mais",
-      icon: TrendingUp,
-      color: "bg-blue-500/10 text-blue-500",
+      icon: Medal,
+      color: "bg-green-700/10 text-green-700",
     },
     {
       title: "Jogos Rápidos",
       description: "Crash, Mines, Plinko",
-      icon: Zap,
-      color: "bg-amber-500/10 text-amber-500",
+      icon: Gamepad2,
+      color: "bg-amber-800/10 text-amber-800",
+      badge: "NOVO",
     },
   ];
 
@@ -61,56 +70,67 @@ export default function LandingPage() {
     },
     {
       icon: Zap,
-      title: "Saques Instantâneos",
+      title: "Saques instantâneos",
       description: "Receba seus ganhos via PIX em minutos",
     },
     {
       icon: Gift,
-      title: "Bônus Generosos",
-      description: "Bônus de boas-vindas de R$ 50 + promoções",
+      title: "bônus Generosos",
+      description: "bônus de boas-vindas de R$ 50 + promoÃ§Ãµes",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative bg-background">
+      <AuroraBackground />
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <header className="border-b/0 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50 sticky top-0 z-40">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
           <div className="flex items-center gap-2">
-            <Trophy className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">{platformName}</span>
+            <div className="h-12 w-12 grid place-items-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg casino-card-glow">
+              <PandaIcon className="h-8 w-8" />
+            </div>
+            <span className="text-2xl font-extrabold tracking-tight text-gradient-casino">{platformName}</span>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button variant="ghost" asChild data-testid="link-login">
               <Link href="/auth">Entrar</Link>
             </Button>
-            <Button asChild data-testid="link-register">
+            <Button asChild className="btn-glow" data-testid="link-register">
               <Link href="/auth">Cadastrar</Link>
             </Button>
           </div>
         </div>
       </header>
+      {/* Promo bar */}
+      <PromoMarquee
+        messages={[
+          "Bônus de R$ 50 para novos jogadores",
+          "PIX instantâneo — saques em minutos",
+          "Cassino Ao Vivo com dealers reais",
+        ]}
+      />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
+        {/* Aurora background is globally positioned; section overlay not needed */}
         <div className="container mx-auto relative px-4 max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
-            <Badge className="mb-4" data-testid="badge-promo">
+            <Badge className="mb-4 hover-elevate" data-testid="badge-promo">
               <Gift className="mr-1 h-3 w-3" />
               Bônus de R$ 50 para novos jogadores
             </Badge>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-              A Melhor Experiência de
-              <span className="text-primary"> Casino & Apostas</span>
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
+              A Melhor <span className="text-gradient-casino">Experiência</span> de
+              <span className="text-gradient-casino"> Casino & Apostas</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Milhares de jogos, odds competitivas e saques instantâneos via PIX.
               Comece agora e ganhe R$ 50 de bônus!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="text-lg" data-testid="button-cta-register">
+              <Button size="lg" asChild className="text-lg btn-glow" data-testid="button-cta-register">
                 <Link href="/auth">
                   Começar Agora
                   <ChevronRight className="ml-2 h-5 w-5" />
@@ -120,6 +140,7 @@ export default function LandingPage() {
                 <a href="#games">Ver Jogos</a>
               </Button>
             </div>
+            <JackpotBanner />
           </div>
         </div>
       </section>
@@ -135,19 +156,16 @@ export default function LandingPage() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             {games.map((game) => {
-              const GameIcon = game.icon;
+              const GameIcon = game.icon as any;
               return (
-                <Card key={game.title} className="hover-elevate cursor-pointer transition-all" data-testid={`card-game-${game.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                  <CardContent className="p-6">
-                    <div className={`inline-flex p-3 rounded-lg mb-4 ${game.color}`}>
-                      <GameIcon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">{game.title}</h3>
-                    <p className="text-muted-foreground text-sm">
-                      {game.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                <GameCard
+                  key={game.title}
+                  title={game.title}
+                  description={game.description}
+                  Icon={GameIcon}
+                  accentClass={game.color}
+                  badge={game.badge as any}
+                />
               );
             })}
           </div>
@@ -187,7 +205,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold mb-4">
               Pronto para Começar a Ganhar?
             </h2>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Cadastre-se agora e receba R$ 50 de bônus de boas-vindas
             </p>
             <Button size="lg" asChild className="text-lg" data-testid="button-footer-cta">
@@ -217,3 +235,16 @@ export default function LandingPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
