@@ -18,7 +18,13 @@ type Props = {
 
 export function GameCard({ title, description, Icon, accentClass = "", badge, iconSize = 28, iconWeight = "fill", onClick }: Props) {
   return (
-    <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ type: "spring", stiffness: 260, damping: 18 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      whileHover={{ y: -4, scale: 1.02 }}
+    >
       <Card onClick={onClick} className="hover-elevate casino-card-glow cursor-pointer transition-all border relative overflow-hidden">
         <CardContent className="p-6">
           {badge && (

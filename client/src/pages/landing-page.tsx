@@ -150,10 +150,24 @@ export default function LandingPage() {
       <section id="games" className="py-20 bg-muted/50">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Categorias de Jogos</h2>
-            <p className="text-muted-foreground">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold mb-4"
+            >
+              Categorias de Jogos
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-muted-foreground"
+            >
               Escolha entre milhares de opções de entretenimento
-            </p>
+            </motion.p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             {games.map((game) => {
@@ -179,10 +193,24 @@ export default function LandingPage() {
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Por Que Escolher a {platformName}?</h2>
-            <p className="text-muted-foreground">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5 }}
+              className="text-3xl font-bold mb-4"
+            >
+              Por Que Escolher a {platformName}?
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-muted-foreground"
+            >
               A plataforma mais confiável e segura do Brasil
-            </p>
+            </motion.p>
           </div>
           <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
             {features.map((feature) => {
@@ -204,22 +232,40 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary/5">
+      <section className="py-20">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Pronto para Começar a Ganhar?
-            </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Cadastre-se agora e receba R$ 50 de bônus de boas-vindas
-            </p>
-            <Button size="lg" asChild className="text-lg" data-testid="button-footer-cta">
-              <Link href="/auth">
-                Criar Conta Grátis
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
+          <Card className="card-glass card-shine overflow-hidden">
+            <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-6">
+              <div className="max-w-xl text-center md:text-left">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-3xl font-bold mb-3"
+                >
+                  Pronto para Começar a Ganhar?
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="text-lg sm:text-xl text-muted-foreground max-w-2xl"
+                >
+                  Cadastre-se agora e receba R$ 50 de bônus de boas-vindas.
+                </motion.p>
+              </div>
+              <div className="flex-shrink-0">
+                <Button size="lg" asChild className="text-lg btn-glow" data-testid="button-footer-cta">
+                  <Link href="/auth">
+                    Criar Conta Grátis
+                    <ChevronRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
       </section>
 

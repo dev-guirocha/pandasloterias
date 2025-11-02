@@ -120,26 +120,27 @@ export default function AuthPage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Senha</FormLabel>
-                            <FormControl>
-                              <div className="relative">
+                            <FormLabel htmlFor="login-password">Senha</FormLabel>
+                            <div className="relative">
+                              <FormControl>
                                 <Input
                                   {...field}
-                                  type={showRegisterPassword ? "text" : "password"}
-                                  placeholder="Mínimo 6 caracteres"
-                                  data-testid="input-register-password"
-                                  autoComplete="new-password"
+                                  id="login-password"
+                                  type={showLoginPassword ? "text" : "password"}
+                                  placeholder="Sua senha"
+                                  data-testid="input-login-password"
+                                  autoComplete="current-password"
                                 />
-                                <button
-                                  type="button"
-                                  className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
-                                  onClick={() => setShowRegisterPassword((v) => !v)}
-                                  aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
-                                >
-                                  {showRegisterPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                              </div>
-                            </FormControl>
+                              </FormControl>
+                              <button
+                                type="button"
+                                className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
+                                onClick={() => setShowLoginPassword((v) => !v)}
+                                aria-label={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
+                              >
+                                {showLoginPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              </button>
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -275,26 +276,27 @@ export default function AuthPage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Senha</FormLabel>
-                            <FormControl>
-                              <div className="relative">
+                            <FormLabel htmlFor="register-password">Senha</FormLabel>
+                            <div className="relative">
+                              <FormControl>
                                 <Input
                                   {...field}
+                                  id="register-password"
                                   type={showRegisterPassword ? "text" : "password"}
                                   placeholder="Mínimo 6 caracteres"
                                   data-testid="input-register-password"
                                   autoComplete="new-password"
                                 />
-                                <button
-                                  type="button"
-                                  className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
-                                  onClick={() => setShowRegisterPassword((v) => !v)}
-                                  aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
-                                >
-                                  {showRegisterPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                              </div>
-                            </FormControl>
+                              </FormControl>
+                              <button
+                                type="button"
+                                className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground hover:text-foreground"
+                                onClick={() => setShowRegisterPassword((v) => !v)}
+                                aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
+                              >
+                                {showRegisterPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              </button>
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}
