@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
-type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
+type IconType = React.ComponentType<any>;
 
 type Props = {
   title: string;
@@ -11,10 +11,12 @@ type Props = {
   Icon: IconType;
   accentClass?: string; // e.g. bg-emerald-500/10 text-emerald-500
   badge?: "JACKPOT" | "HOT" | "NOVO";
+  iconSize?: number;
+  iconWeight?: any; // phosphor weight e.g. "fill" | "duotone"
   onClick?: () => void;
 };
 
-export function GameCard({ title, description, Icon, accentClass = "", badge, onClick }: Props) {
+export function GameCard({ title, description, Icon, accentClass = "", badge, iconSize = 28, iconWeight = "fill", onClick }: Props) {
   return (
     <motion.div whileHover={{ y: -4, scale: 1.02 }} transition={{ type: "spring", stiffness: 260, damping: 18 }}>
       <Card onClick={onClick} className="hover-elevate casino-card-glow cursor-pointer transition-all border relative overflow-hidden">
@@ -27,7 +29,7 @@ export function GameCard({ title, description, Icon, accentClass = "", badge, on
             </div>
           )}
           <div className={`inline-flex p-3 rounded-lg mb-4 ${accentClass}`}>
-            <Icon className="h-6 w-6" />
+            <Icon size={iconSize} weight={iconWeight} />
           </div>
           <h3 className="text-xl font-bold mb-2">{title}</h3>
           <p className="text-muted-foreground text-sm">{description}</p>
@@ -38,4 +40,3 @@ export function GameCard({ title, description, Icon, accentClass = "", badge, on
 }
 
 export default GameCard;
-

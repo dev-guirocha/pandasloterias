@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { Redirect } from "wouter";
+import { Redirect, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,9 +66,13 @@ export default function AuthPage() {
       <div className="w-full lg:w-2/5 flex items-center justify-center p-8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 relative z-10">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-lg casino-card-glow mb-4">
+            <Link
+              href="/"
+              title="Voltar à Home"
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 shadow-lg casino-card-glow mb-4 cursor-pointer transition-transform hover:scale-[1.03]"
+            >
               <PandaIcon className="h-12 w-12" />
-            </div>
+            </Link>
             <h1 className="text-3xl font-bold tracking-tight text-gradient-casino">Panda Loterias</h1>
             <p className="text-muted-foreground">
               Cassino, Loterias e Jogo do Bicho Online
