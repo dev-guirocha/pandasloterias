@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import PromoMarquee from "@/components/promo-marquee";
 import JackpotBanner from "@/components/jackpot-banner";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Trophy, Gift as GiftLucide, ChevronRight, Sparkles } from "lucide-react";
+import { Trophy, Gift as GiftLucide, ChevronRight, Sparkles, DollarSign } from "lucide-react";
 import { Shield as ShieldPh, Lightning, Gift as GiftPh, DiamondsFour, DiceFive, SoccerBall, GameController } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -87,19 +87,22 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b/0 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50 sticky top-0 z-40">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
-          <div className="flex items-center gap-2">
-            <div className="h-12 w-12 grid place-items-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg casino-card-glow">
-              <PandaIcon className="h-8 w-8" />
+          <Link href="/" aria-label="Ir para a página inicial" className="group inline-flex items-center gap-3 rounded-xl px-2 py-1 -ml-2 hover:bg-muted/40 transition-colors">
+            <div className="h-10 w-10 grid place-items-center rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-lg casino-card-glow transition-transform group-hover:scale-105">
+              <PandaIcon className="h-6 w-6" />
             </div>
-            <span className="text-2xl font-extrabold tracking-tight text-gradient-casino">{platformName}</span>
-          </div>
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gradient-casino leading-none">{platformName}</span>
+          </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button variant="ghost" asChild data-testid="link-login">
+            <Button variant="ghost" asChild className="text-muted-foreground" data-testid="link-login">
               <Link href="/auth">Entrar</Link>
             </Button>
             <Button asChild className="btn-glow" data-testid="link-register">
-              <Link href="/auth">Cadastrar</Link>
+              <Link href="/auth">
+                Cadastrar
+                <Sparkles className="ml-1 h-4 w-4" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -130,15 +133,12 @@ export default function LandingPage() {
               Milhares de jogos, odds competitivas e saques instantâneos via PIX.
               Comece agora e ganhe R$ 50 de bônus!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Button size="lg" asChild className="text-lg btn-glow" data-testid="button-cta-register">
                 <Link href="/auth">
-                  Começar Agora
-                  <ChevronRight className="ml-2 h-5 w-5" />
+                  <DollarSign className="mr-2 h-5 w-5" />
+                  Começar agora
                 </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg" data-testid="button-cta-games">
-                <a href="#games">Ver Jogos</a>
               </Button>
             </div>
             <JackpotBanner className="jackpot--hero" backgroundSrc="/static/images/jackpot_zhuti_1140X570.svg" />
